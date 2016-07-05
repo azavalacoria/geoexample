@@ -1,3 +1,3 @@
 <?php
-include_once 'example.html';
+include_once 'openstreet.html';
 ?>

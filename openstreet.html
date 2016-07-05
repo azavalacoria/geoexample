@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,700' rel='stylesheet' type='text/css'>
+<script>
+function success (position) {
+	map = new OpenLayers.Map("mapContainer");
+	map.addLayer(new OpenLayers.Layer.OSM());
+
+	var lonLat = new OpenLayers.LonLat( position.coords.longitude ,position.coords.latitude )
+				.transform(
+					new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+					map.getProjectionObject() // to Spherical Mercator Projection
+				);
+	var zoom=16;
+
+	var markers = new OpenLayers.Layer.Markers( "Markers" );
+	map.addLayer(markers);
+	markers.addMarker(new OpenLayers.Marker(lonLat));
+	map.setCenter (lonLat, zoom);
+}
+
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(success);
+} else {
+	error('Tu navegador web no tiene soporte para Geolocalización');
+}
+</script>
+<style type="text/css">
+#mapContainer { width: 600px; height: 400px; }
+.title-big { font-family: Roboto; font-size: 1.1em; }
+</style>
+</head>
+<body>
+	<div class="center-container">
+		<h1 class="title-big">Ejemplo del uso de Geolocalización y OpenStreetMap en el navegador web</h1>
+		<div id="mapContainer"></div>
+	</div>
+</body>
+</html>
